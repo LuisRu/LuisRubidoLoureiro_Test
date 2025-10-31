@@ -1,0 +1,40 @@
+<section class="space-y-4">
+  <p class="text-sm text-slate-500">
+    Mostrando {{ hotels.length }} de {{ total }} hoteles
+  </p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    @for (hotel of hotels; track hotel.id) {
+      <app-hotels-card [hotel]="hotel"></app-hotels-card>
+    }
+  </div>
+
+  <div class="flex gap-2 items-center pt-2">
+    <button
+      class="px-3 py-1 border rounded disabled:opacity-40"
+      (click)="onPageChange(currentPage - 1)"
+      [disabled]="currentPage === 1"
+    >
+      «
+    </button>
+
+    @for (page of [].constructor(totalPages); let i = $index; track i) {
+      <button
+        class="px-3 py-1 border rounded"
+        [class.bg-blue-500]="currentPage === i + 1"
+        [class.text-white]="currentPage === i + 1"
+        (click)="onPageChange(i + 1)"
+      >
+        {{ i + 1 }}
+      </button>
+    }
+
+    <button
+      class="px-3 py-1 border rounded disabled:opacity-40"
+      (click)="onPageChange(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+    >
+      »
+    </button>
+  </div>
+</section>

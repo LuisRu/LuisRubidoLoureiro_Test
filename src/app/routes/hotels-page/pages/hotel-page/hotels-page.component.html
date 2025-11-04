@@ -1,4 +1,3 @@
-<!-- src/app/features/hotels/pages/hotels-page.component.html -->
 <main class="max-w-6xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-[260px,1fr] gap-6">
   <app-hotel-filter
     [rating]="ratingFilter()"
@@ -9,13 +8,14 @@
     (ratingChange)="onRatingFilter($event)"
     (priceChange)="onPriceFilter($event)"
     (reset)="onResetFilters()"
-  />
+  ></app-hotel-filter>
 
-  <app-hotels-list
-    [hotels]="pagedHotels()"
-    [total]="filteredHotels().length"
-    [currentPage]="currentPage()"
-    [totalPages]="totalPages()"
-    (pageChange)="goToPage($event)"
-  />
+ <app-hotels-list
+  [hotels]="hotels()"
+  [total]="total()"
+  [currentPage]="currentPage()"
+  [totalPages]="totalPages()"
+  [pageSize]="pageSize"
+  (pageChange)="goToPage($event)"
+/>
 </main>

@@ -1,19 +1,21 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
 import { HotelsListComponent } from '../../../../shared/hotel-list/hotels-list.component';
 import { AutoDestroyService } from '../../../../core/services/utils/auto-destroy.service';
 import { HotelsService } from '../../services/hotels.service';
-import { HotelFilterComponent } from '../../../../shared/hotels-filter/hotels-filter.component';
 import { Hotel } from '../../../../core/models/hotel';
 import { takeUntil } from 'rxjs';
+import { HotelFilterComponent } from '../../../../shared/hotels-filter/hotels-filter.component';
 
 @Component({
   selector: 'app-hotels-page',
   standalone: true,
   imports: [HotelsListComponent, HotelFilterComponent],
   providers: [AutoDestroyService],
-  templateUrl: './hotels-page.component.html'
+  templateUrl: './hotels-page.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HotelsPageComponent {
+  
   private hotelsService = inject(HotelsService);
   private destroy$ = inject(AutoDestroyService);
 
@@ -25,62 +27,53 @@ export class HotelsPageComponent {
   readonly pageSize = 12;
   readonly currentPage = signal<number>(1);
 
-  readonly allHotels = this.hotelsService.$hotels;
-
-  readonly filteredHotels = computed<Hotel[]>(() => {
-    const name = this.nameFilter().toLowerCase();
-    const cats = this.categoriesFilter();
-    const minRating = this.ratingFilter();
-    const maxPrice = this.priceFilter();
-
-    return this.allHotels().filter(h => {
-      const matchesName = !name || h.name.toLowerCase().includes(name);
-      const matchesCat = cats.length === 0 || cats.includes(h.stars);
-      const matchesRating = h.rate >= minRating;
-      const matchesPrice = h.price <= maxPrice;
-      return matchesName && matchesCat && matchesRating && matchesPrice;
-    });
-  });
+  readonly hotels = signal<Hotel[]>([]);
+  readonly total = signal<number>(0);
 
   readonly totalPages = computed(() =>
-    Math.max(1, Math.ceil(this.filteredHotels().length / this.pageSize))
+    Math.max(1, Math.ceil(this.total() / this.pageSize))
   );
 
-  readonly pagedHotels = computed<Hotel[]>(() => {
-    const page = this.currentPage();
-    const start = (page - 1) * this.pageSize;
-    return this.filteredHotels().slice(start, start + this.pageSize);
-  });
+  private readonly query = computed(() => ({
+    page: this.currentPage(),
+    limit: this.pageSize,
+    name: this.nameFilter() || undefined,
+    categories: this.categoriesFilter(),
+    minRating: this.ratingFilter() || undefined,
+    maxPrice: this.priceFilter() || undefined
+  }));
 
   constructor() {
-    this.hotelsService
-      .getHotels()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe();
-
     effect(() => {
-      this.nameFilter();
-      this.categoriesFilter();
-      this.ratingFilter();
-      this.priceFilter();
-      this.currentPage.set(1);
+      const q = this.query();
+      this.hotelsService
+        .getHotels(q)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(({ items, total }) => {
+          this.hotels.set(items);
+          this.total.set(total);
+        });
     });
   }
 
   onNameFilter(value: string) {
     this.nameFilter.set(value);
+    this.currentPage.set(1);
   }
 
   onCategoriesFilter(values: number[]) {
     this.categoriesFilter.set(values);
+    this.currentPage.set(1);
   }
 
   onRatingFilter(value: number) {
     this.ratingFilter.set(value);
+    this.currentPage.set(1);
   }
 
   onPriceFilter(value: number) {
     this.priceFilter.set(value);
+    this.currentPage.set(1);
   }
 
   onResetFilters() {
@@ -88,6 +81,7 @@ export class HotelsPageComponent {
     this.categoriesFilter.set([]);
     this.ratingFilter.set(0);
     this.priceFilter.set(1000);
+    this.currentPage.set(1);
   }
 
   goToPage(page: number) {

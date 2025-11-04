@@ -16,6 +16,7 @@
       type="text"
       class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
       placeholder="Buscar hotel..."
+      [value]="name"
       (input)="onNameChange($any($event.target).value)"
     />
     <p class="text-xs text-slate-400">
@@ -33,6 +34,7 @@
         <input
           type="checkbox"
           class="rounded text-blue-500 focus:ring-0"
+          [checked]="selectedStars.includes(star)"
           (change)="onCategoryToggle(star, $event)"
         />
         <span>{{ star }} ⭐</span>

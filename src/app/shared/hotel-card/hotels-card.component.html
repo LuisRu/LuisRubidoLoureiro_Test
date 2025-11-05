@@ -1,32 +1,32 @@
-<div
-  class="group relative bg-[#202020] text-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
+<div class="group relative bg-[#202020] text-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300">
   <div class="relative">
-    <!--Tenía esto pero no funcionan las imagenes por estetica puse una de internet [ngSrc]="hotel.image"-->
-    <img ngSrc="https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg" width="240"
-      height="160" alt="{{ hotel.name }}"
-      class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" />
+    <!-- Si quieres usar la imagen del modelo: [ngSrc]="hotel().image" -->
+    <img
+      ngSrc="https://media-cdn.tripadvisor.com/media/photo-s/16/1a/ea/54/hotel-presidente-4s.jpg"
+      width="240"
+      height="160"
+      [alt]="hotel().name"
+      class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+    />
     <div class="absolute top-2 left-2 bg-black/60 text-xs px-2 py-1 rounded-full flex items-center gap-1">
       <span class="text-yellow-400">★</span>
-      <span>{{ hotel.stars }}</span>
+      <span>{{ hotel().stars }}</span>
     </div>
-    <div class="absolute top-2 right-2 bg-black/60 text-xs px-2 py-1 rounded-full">
-      <div class="absolute top-2 right-2 bg-black/60 text-xs px-2 py-1 rounded-full flex items-center gap-1">
-        <span class="text-yellow-400">🏅</span>
-        <span>{{ hotel.rate }}</span>
-      </div>
-
+    <div class="absolute top-2 right-2 bg-black/60 text-xs px-2 py-1 rounded-full flex items-center gap-1">
+      <span class="text-yellow-400">🏅</span>
+      <span>{{ hotel().rate }}</span>
     </div>
   </div>
 
   <div class="p-4 space-y-1">
     <h3 class="text-lg font-semibold leading-tight group-hover:text-yellow-400 transition-colors">
-      {{ hotel.name }}
+      {{ hotel().name }}
     </h3>
-    <p class="text-sm text-gray-300 truncate">{{ hotel.address }}</p>
+    <p class="text-sm text-gray-300 truncate">{{ hotel().address }}</p>
     <div class="flex items-center justify-between pt-2 border-t border-white/10 mt-3">
       <span class="text-sm text-gray-400">Desde</span>
       <span class="text-lg font-bold text-yellow-400">
-        {{ hotel.price | currency : "EUR" }}
+        {{ hotel().price | currency : 'EUR' }}
       </span>
     </div>
   </div>

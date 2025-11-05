@@ -1,10 +1,10 @@
 <section class="space-y-4">
   <p class="text-sm text-slate-500">
-    Mostrando {{ startIndex }}–{{ endIndex }} de {{ total }} hoteles
+    Mostrando {{ startIndex() }}–{{ endIndex() }} de {{ total() }} hoteles
   </p>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    @for (hotel of hotels; track hotel.id) {
+    @for (hotel of hotels(); track hotel.id) {
       <app-hotels-card [hotel]="hotel" />
     }
   </div>
@@ -12,20 +12,20 @@
   <div class="flex gap-2 items-center pt-2">
     <button
       class="px-3 py-1 border rounded disabled:opacity-40"
-      (click)="onPageChange(currentPage - 1)"
-      [disabled]="currentPage === 1"
+      (click)="onPageChange(currentPage() - 1)"
+      [disabled]="currentPage() === 1"
       aria-label="Página anterior"
     >
       «
     </button>
 
-    @for (p of pages; track p) {
+    @for (p of pages(); track p) {
       <button
         class="px-3 py-1 border rounded"
-        [class.bg-blue-500]="currentPage === p"
-        [class.text-white]="currentPage === p"
+        [class.bg-blue-500]="currentPage() === p"
+        [class.text-white]="currentPage() === p"
         (click)="onPageChange(p)"
-        [attr.aria-current]="currentPage === p ? 'page' : null"
+        [attr.aria-current]="currentPage() === p ? 'page' : null"
       >
         {{ p }}
       </button>
@@ -33,8 +33,8 @@
 
     <button
       class="px-3 py-1 border rounded disabled:opacity-40"
-      (click)="onPageChange(currentPage + 1)"
-      [disabled]="currentPage === totalPages"
+      (click)="onPageChange(currentPage() + 1)"
+      [disabled]="currentPage() === totalPages()"
       aria-label="Página siguiente"
     >
       »

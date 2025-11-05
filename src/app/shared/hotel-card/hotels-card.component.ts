@@ -1,14 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { Hotel } from '../../core/models/hotel';
 import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-hotels-card',
-  imports: [NgOptimizedImage,CurrencyPipe],
-  standalone : true,
+  standalone: true,
+  imports: [NgOptimizedImage, CurrencyPipe],
   templateUrl: './hotels-card.component.html'
 })
 export class HotelsCardComponent {
-  
-  @Input({required:true}) hotel : Hotel
+  hotel = input.required<Hotel>();
 }

@@ -53,7 +53,6 @@ export class HotelsPageComponent {
     this.navigateWithParams({ price: Number.isFinite(v) ? v : null, page: 1 }, true);
   }
 
-
   goToPage(p: number) {
     if (p >= 1 && p <= this.hs.totalPages()) {
       this.navigateWithParams({ page: p }, false);

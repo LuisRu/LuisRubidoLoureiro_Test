@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { HotelsCardComponent } from '../hotel-card/hotels-card.component';
 import { Hotel } from '../../core/models/hotel';
 
@@ -10,27 +10,29 @@ import { Hotel } from '../../core/models/hotel';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HotelsListComponent {
-  @Input() hotels: Hotel[] = [];
-  @Input() total = 0;
-  @Input() currentPage = 1;
-  @Input() totalPages = 1;
-  @Input() pageSize = 12;
+  hotels      = input<Hotel[]>([]);
+  total       = input(0);
+  currentPage = input(1);
+  totalPages  = input(1);
+  pageSize    = input(12);
 
-  @Output() pageChange = new EventEmitter<number>();
+  pageChange = output<number>();
 
-  get startIndex(): number {
-    if (this.total === 0) return 0;
-    return (this.currentPage - 1) * this.pageSize + 1;
-  }
+  readonly startIndex = computed(() => {
+    const total = this.total();
+    if (total === 0) return 0;
+    return (this.currentPage() - 1) * this.pageSize() + 1;
+  });
 
-  get endIndex(): number {
-    if (this.total === 0) return 0;
-    return this.startIndex + this.hotels.length - 1;
-  }
+  readonly endIndex = computed(() => {
+    const total = this.total();
+    if (total === 0) return 0;
+    return this.startIndex() + this.hotels().length - 1;
+  });
 
-  get pages(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
+  readonly pages = computed(() =>
+    Array.from({ length: this.totalPages() }, (_, i) => i + 1)
+  );
 
   onPageChange(page: number) {
     this.pageChange.emit(page);

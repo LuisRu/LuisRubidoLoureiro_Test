@@ -3,16 +3,11 @@
     <h2 class="text-lg font-semibold text-slate-800">Filtros</h2>
   </div>
 
-
   <div class="space-y-1">
     <label class="block text-sm font-medium text-slate-700">Nombre</label>
-    <input
-      type="text"
+    <input type="text"
       class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
-      placeholder="Buscar hotel..."
-      [value]="name"
-      (input)="onNameChange($any($event.target).value)"
-    />
+      placeholder="Buscar hotel..." (input)="handleNameInput($event)" />
     <p class="text-xs text-slate-400">
       Busca por coincidencia en cualquier parte del nombre.
     </p>
@@ -21,67 +16,50 @@
   <div class="space-y-2">
     <p class="text-sm font-medium text-slate-700">Categoría</p>
     <div class="grid grid-cols-3 gap-2">
+      @for (star of [1,2,3,4,5]; track star) {
       <label
-        *ngFor="let star of [1,2,3,4,5]"
-        class="flex items-center gap-2 rounded-lg border border-slate-200 px-2 py-1.5 text-sm cursor-pointer hover:border-blue-400"
-      >
-        <input
-          type="checkbox"
-          class="rounded text-blue-500 focus:ring-0"
-          [checked]="selectedStars.includes(star)"
-          (change)="onCategoryToggle(star, $event)"
-        />
+        class="flex items-center gap-2 rounded-lg border border-slate-200 px-2 py-1.5 text-sm cursor-pointer hover:border-blue-400">
+        <input type="checkbox" class="rounded text-blue-500 focus:ring-0" [checked]="selectedStars().includes(star)"
+          (change)="handleStarsToggle($event, star)" />
         <span>{{ star }} ⭐</span>
       </label>
+      }
     </div>
     <p class="text-xs text-slate-400">
       Puedes marcar varias (p. ej. 3⭐, 4⭐ y 5⭐)
     </p>
   </div>
 
-
   <div class="space-y-2">
     <div class="flex items-center justify-between">
       <label class="text-sm font-medium text-slate-700">Valoración mínima</label>
       <span class="text-sm font-semibold text-slate-700">
-        {{ rating }}
+        {{ rating() }}
       </span>
     </div>
-    <input
-      type="range"
-      min="0"
-      max="5"
-      step="0.1"
-      [value]="rating"
-      (input)="onRatingChange($any($event.target).value)"
-      class="w-full accent-blue-500"
-    />
+    <input type="range" min="0" max="5" step="0.1" [value]="rating()" (input)="handleRatingInput($event)"
+      class="w-full accent-blue-500" />
+
     <div class="flex justify-between text-xs text-slate-400">
       <span>0</span>
       <span>5</span>
     </div>
   </div>
 
-  <!-- Precio -->
   <div class="space-y-2">
     <div class="flex items-center justify-between">
       <label class="text-sm font-medium text-slate-700">Precio máximo</label>
       <span class="text-sm font-semibold text-slate-700">
-        {{ maxPrice }} €
+        {{ maxPrice() }} €
       </span>
     </div>
-    <input
-      type="range"
-      min="50"
-      max="1000"
-      step="1"
-      [value]="maxPrice"
-      (input)="onPriceChange($any($event.target).value)"
-      class="w-full accent-blue-500"
-    />
+    <input type="range" min="50" max="1000" step="1" [value]="maxPrice()" (input)="handlePriceInput($event)"
+      class="w-full accent-blue-500" />
+
     <div class="flex justify-between text-xs text-slate-400">
       <span>50€</span>
       <span>1000€</span>
     </div>
   </div>
+
 </div>

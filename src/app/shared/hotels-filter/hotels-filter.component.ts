@@ -1,50 +1,58 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { PRICE_MAX } from '../../core/constans/hotel';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+} from '@angular/core';
 
 @Component({
   selector: 'app-hotel-filter',
-  imports: [CommonModule],
-  standalone:true,
-  templateUrl: './hotels-filter.component.html'
+  standalone: true,
+  imports: [CommonModule]
+  , templateUrl: './hotels-filter.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HotelFilterComponent {
-  @Input({required:false}) name : string = "";
-  @Input() rating = 0;
-  @Input() maxPrice = PRICE_MAX;
-  @Input() selectedStars: number[] = [];
+  rating = input(0);
+  maxPrice = input<number>(0);
+  selectedStars = input<number[]>([]);
 
-  @Output() nameChange = new EventEmitter<string>();
-  @Output() categoriesChange = new EventEmitter<number[]>();
-  @Output() ratingChange = new EventEmitter<number>();
-  @Output() priceChange = new EventEmitter<number>();
+  nameChange = output<string>();
+  categoriesChange = output<number[]>();
+  ratingChange = output<number>();
+  priceChange = output<number>();
 
-
-  onNameChange(name: string) {
-    this.name = name
-    this.nameChange.emit(name);
+  onNameInput(v: string) {
+    this.nameChange.emit(v);
   }
-
-  onCategoryToggle(star: number, event: Event) {
+  handleStarsToggle(event: Event, star: number) {
     const checked = (event.target as HTMLInputElement).checked;
-    if (checked) {
-      this.selectedStars = [...this.selectedStars, star];
-    } else {
-      this.selectedStars = this.selectedStars.filter(c => c !== star);
-    }
-    this.categoriesChange.emit(this.selectedStars);
+    const next = new Set(this.selectedStars()); 
+    if (checked) next.add(star); else next.delete(star);
+    this.categoriesChange.emit(Array.from(next).sort((a, b) => a - b));
   }
 
-  onRatingChange(val: string | number) {
-    const num = +val;
-    this.rating = num;
-    this.ratingChange.emit(num);
+  onRatingInput(v: number) {
+    this.ratingChange.emit(v);
+  }
+  onPriceInput(v: number) {
+    this.priceChange.emit(v);
   }
 
-  onPriceChange(val: string | number) {
-    const num = +val;
-    this.maxPrice = num;
-    this.priceChange.emit(num);
+  handlePriceInput(event: Event) {
+    const value = Number((event.target as HTMLInputElement).value);
+    this.priceChange.emit(value);
   }
+
+  handleRatingInput(event: Event) {
+    const value = Number((event.target as HTMLInputElement).value);
+    this.ratingChange.emit(value);
+  }
+
+  handleNameInput(event: Event) {
+    this.nameChange.emit((event.target as HTMLInputElement).value);
+  }
+
 
 }

@@ -9,26 +9,26 @@
     (priceChange)="onPriceFilter($event)">
   </app-hotel-filter>
 
-  @if (hs.isLoading()) {
-    <div class="w-full flex items-center justify-center py-10" role="status" aria-busy="true">
-      <div class="animate-spin rounded-full h-8 w-8 border-2 border-slate-300 border-t-transparent"></div>
-      <span class="ml-3 text-slate-600">Cargando hoteles…</span>
-    </div>
-  }
-  @else if (hs.error()) {
-    <div class="w-full rounded-lg border border-red-200 bg-red-50 p-4">
-      <p class="text-red-800 text-sm">Error cargando hoteles</p>
-      <button class="mt-2 px-3 py-1 rounded bg-red-600 text-white" (click)="hs.reload()">Reintentar</button>
-    </div>
-  }
-  @else {
-    <app-hotels-list
-      [hotels]="hs.hotels()"
-      [total]="hs.total()"
-      [currentPage]="hs.currentPage()"
-      [totalPages]="hs.totalPages()"
-      [pageSize]="hs.pageSize"
-      (pageChange)="goToPage($event)">
-    </app-hotels-list>
-  }
+  <section>
+    @if (hs.isLoading()) {
+      <app-state-loading
+        [text]="'Cargando hoteles…'">
+      </app-state-loading>
+    }
+    @else if (hs.error()) {
+      <app-state-error
+        [text]="'Error cargando hoteles'">
+      </app-state-error>
+    }
+    @else {
+      <app-hotels-list
+        [hotels]="hs.hotels()"
+        [total]="hs.total()"
+        [currentPage]="hs.currentPage()"
+        [totalPages]="hs.totalPages()"
+        [pageSize]="hs.pageSize"
+        (pageChange)="goToPage($event)">
+      </app-hotels-list>
+    }
+  </section>
 </main>

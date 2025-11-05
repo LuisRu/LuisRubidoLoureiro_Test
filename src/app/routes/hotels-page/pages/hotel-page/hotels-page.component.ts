@@ -6,11 +6,13 @@ import { PRICE_MAX } from '../../../../core/constans/hotel';
 import { ActivatedRoute, Router } from '@angular/router';
 import { effect } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { StateErrorComponent } from '../../../../shared/components/state-error/state-error.component';
+import { StateLoadingComponent } from '../../../../shared/components/state-loading/state-loading.component';
 
 @Component({
   selector: 'app-hotels-page',
   standalone: true,
-  imports: [HotelsListComponent, HotelFilterComponent],
+  imports: [HotelsListComponent, HotelFilterComponent,StateErrorComponent,StateLoadingComponent],
   templateUrl: './hotels-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

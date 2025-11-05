@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { Hotel } from '../../core/models/hotel';
 import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
+import { Hotel } from '../../../../core/models/hotel';
 
 @Component({
   selector: 'app-hotels-card',

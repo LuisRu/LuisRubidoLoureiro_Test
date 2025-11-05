@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { HotelsListComponent } from '../../../../shared/hotel-list/hotels-list.component';
-import { HotelFilterComponent } from '../../../../shared/hotels-filter/hotels-filter.component';
+import { HotelsListComponent } from '../../ui/hotel-list/hotels-list.component';
+import { HotelFilterComponent } from '../../ui/hotels-filter/hotels-filter.component';
 import { HotelsService } from '../../services/hotels.service';
 import { PRICE_MAX } from '../../../../core/constans/hotel';
 import { ActivatedRoute, Router } from '@angular/router';

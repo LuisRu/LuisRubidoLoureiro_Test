@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { HotelsCardComponent } from '../hotel-card/hotels-card.component';
-import { Hotel } from '../../core/models/hotel';
+import { Hotel } from '../../../../core/models/hotel';
 
 @Component({
   selector: 'app-hotels-list',

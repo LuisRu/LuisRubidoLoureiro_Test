@@ -18,7 +18,6 @@ export class HotelFilterComponent {
   @Output() categoriesChange = new EventEmitter<number[]>();
   @Output() ratingChange = new EventEmitter<number>();
   @Output() priceChange = new EventEmitter<number>();
-  @Output() reset = new EventEmitter<void>();
 
 
   onNameChange(name: string) {
@@ -48,16 +47,4 @@ export class HotelFilterComponent {
     this.priceChange.emit(num);
   }
 
-  onReset() {
-    this.selectedStars = [];
-    this.name = " ";
-    this.rating = 0;
-    this.maxPrice = PRICE_MAX;
-
-    this.reset.emit();
-    this.nameChange.emit('');
-    this.categoriesChange.emit([]);
-    this.ratingChange.emit(0);
-    this.priceChange.emit(PRICE_MAX);
-  }
 }

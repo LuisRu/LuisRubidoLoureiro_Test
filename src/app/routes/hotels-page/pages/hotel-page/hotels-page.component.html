@@ -1,21 +1,35 @@
 <main class="max-w-6xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-[260px,1fr] gap-6">
   <app-hotel-filter
-    [rating]="ratingFilter()"
-    [maxPrice]="priceFilter()"
-    [selectedStars]="starsFilter()"
+    [rating]="hs.ratingFilter()"
+    [maxPrice]="hs.priceFilter()"
+    [selectedStars]="hs.starsFilter()"
     (nameChange)="onNameFilter($event)"
     (categoriesChange)="onCategoriesFilter($event)"
     (ratingChange)="onRatingFilter($event)"
     (priceChange)="onPriceFilter($event)"
-    (reset)="onResetFilters()"
-  ></app-hotel-filter>
+    (reset)="onResetFilters()">
+  </app-hotel-filter>
 
- <app-hotels-list
-  [hotels]="hotels()"
-  [total]="total()"
-  [currentPage]="currentPage()"
-  [totalPages]="totalPages()"
-  [pageSize]="pageSize"
-  (pageChange)="goToPage($event)"
-/>
+  @if (hs.isLoading()) {
+    <div class="w-full flex items-center justify-center py-10" role="status" aria-busy="true">
+      <div class="animate-spin rounded-full h-8 w-8 border-2 border-slate-300 border-t-transparent"></div>
+      <span class="ml-3 text-slate-600">Cargando hoteles…</span>
+    </div>
+  }
+  @else if (hs.error()) {
+    <div class="w-full rounded-lg border border-red-200 bg-red-50 p-4">
+      <p class="text-red-800 text-sm">Error cargando hoteles</p>
+      <button class="mt-2 px-3 py-1 rounded bg-red-600 text-white" (click)="hs.reload()">Reintentar</button>
+    </div>
+  }
+  @else {
+    <app-hotels-list
+      [hotels]="hs.hotels()"
+      [total]="hs.total()"
+      [currentPage]="hs.currentPage()"
+      [totalPages]="hs.totalPages()"
+      [pageSize]="hs.pageSize"
+      (pageChange)="goToPage($event)">
+    </app-hotels-list>
+  }
 </main>

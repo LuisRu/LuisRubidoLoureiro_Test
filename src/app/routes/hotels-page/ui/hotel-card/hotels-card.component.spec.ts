@@ -1,40 +1,26 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { HotelsCardComponent } from './hotels-card.component';
-import { Hotel } from '../../core/models/hotel'; // ajusta la ruta si cambia
+import { Hotel } from '../../../../core/models/hotel';
 
-describe('HotelsCardComponent', () => {
-  let component: HotelsCardComponent;
-  let fixture: ComponentFixture<HotelsCardComponent>;
+describe('HotelsCardComponent (mínimo)', () => {
+  const HOTEL: Hotel = {
+    id: '1',
+    name: 'A Hotel',
+    image: 'img.jpg',
+    address: 'Street 1',
+    stars: 4,
+    rate: 4.5,
+    price: 120
+  };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [HotelsCardComponent] // standalone
-    }).compileComponents();
+  it('acepta el input hotel', () => {
+    const fixture = TestBed.configureTestingModule({
+      imports: [HotelsCardComponent]
+    }).createComponent(HotelsCardComponent);
 
-    fixture = TestBed.createComponent(HotelsCardComponent);
-    component = fixture.componentInstance;
-
-    const mockHotel: Hotel = {
-      id: '1',
-      name: 'Test Hotel',
-      image: 'https://via.placeholder.com/240x180',
-      address: 'Calle 123',
-      stars: 3,
-      rate: 4.5,
-      price: 120
-    };
-
-    component.hotel = mockHotel;
-
+    fixture.componentRef.setInput('hotel', HOTEL);
     fixture.detectChanges();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should render hotel name in template', () => {
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain('Test Hotel');
+    expect(fixture.componentInstance.hotel()).toEqual(HOTEL);
   });
 });

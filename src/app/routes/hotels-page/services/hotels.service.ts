@@ -72,5 +72,4 @@ export class HotelsService {
     Math.max(1, Math.ceil(this.total() / this.pageSize))
   );
 
-  reload() { this.hotelsRes.reload(); }
 }
